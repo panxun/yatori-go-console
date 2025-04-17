@@ -58,26 +58,38 @@ jobs:
           go mod tidy
 
       - name: Prepare Release Directory #创建压缩目录
-        run: mkdir -p ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release
+        run: |
+          mkdir -p ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-amd64-release
+          mkdir -p ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release
+
+      # Build Linux AMD64
+      - name: Build Linux AMD64
+        run: |
+          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
+            -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-amd64-release/${{ env.PROJECT_NAME }}
 
       # Build Linux s390x
       - name: Build Linux s390x
         run: |
-          export CGO_ENABLED=1
-          export GOOS=linux
-          export GOARCH=s390x
-          export CC=s390x-linux-gnu-gcc
-          export CGO_CFLAGS="-march=z16"  # 使用 native 参数
-          echo "CC: $CC"
-          echo "CGO_CFLAGS: $CGO_CFLAGS"
-          go build -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release/${{ env.PROJECT_NAME }}
-      - name: Create release tar
+          CGO_ENABLED=1 GOOS=linux GOARCH=s390x CC=s390x-linux-gnu-gcc go build \
+            -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release/${{ env.PROJECT_NAME }}
+
+      - name: Create release tar for AMD64
         run: | # 打包发布版本压缩包
+          cp command/config.yaml ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-amd64-release
+          cd ${{ env.RELEASE_DIR }}
+          tar -czvf yatori-go-console.${{env.VERSION}}-linux-amd64-release.tar.gz yatori-go-console.${{env.VERSION}}-linux-amd64-release
+          rm -rf yatori-go-console.${{env.VERSION}}-linux-amd64-release
+          cd ..
+
+      - name: Create release tar for s390x
+        run: |
           cp command/config.yaml ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release
           cd ${{ env.RELEASE_DIR }}
           tar -czvf yatori-go-console.${{env.VERSION}}-linux-s390x-release.tar.gz yatori-go-console.${{env.VERSION}}-linux-s390x-release
           rm -rf yatori-go-console.${{env.VERSION}}-linux-s390x-release
           cd ..
+
       # Create GitHub Release
       - name: Create GitHub Release with custom notes
         uses: softprops/action-gh-release@v2
