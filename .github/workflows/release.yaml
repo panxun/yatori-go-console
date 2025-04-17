@@ -66,8 +66,8 @@ jobs:
           export CGO_ENABLED=1
           export GOOS=linux
           export GOARCH=s390x
-          export CC=s390x-linux-gnu-gcc  # 指定使用 s390x 架构的编译器
-          export CGO_CFLAGS="-march=s390x"
+          export CC=s390x-linux-gnu-gcc
+          export CGO_CFLAGS="-march=native"  # 使用 native 参数
           echo "CC: $CC"
           echo "CGO_CFLAGS: $CGO_CFLAGS"
           go build -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release/${{ env.PROJECT_NAME }}
