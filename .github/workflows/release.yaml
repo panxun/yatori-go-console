@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libasound2-dev pkg-config gcc-aarch64-linux-gnu
+          sudo apt-get install -y libasound2-dev pkg-config gcc-s390x-linux-gnu
 
       # Set up Go
       - name: Set up Go
@@ -58,19 +58,19 @@ jobs:
           go mod tidy
 
       - name: Prepare Release Directory #创建压缩目录
-        run: mkdir -p ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-amd64-release
+        run: mkdir -p ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release
 
-      # Build Linux AMD64
-      - name: Build Linux AMD64
+      # Build Linux s390x
+      - name: Build Linux s390x
         run: |
-          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build \
-            -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-amd64-release/${{ env.PROJECT_NAME }}
+          CGO_ENABLED=1 GOOS=linux GOARCH=s390x go build \
+            -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release/${{ env.PROJECT_NAME }}
       - name: Create release tar
         run: | # 打包发布版本压缩包
-          cp command/config.yaml ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-amd64-release
+          cp command/config.yaml ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release
           cd ${{ env.RELEASE_DIR }}
-          tar -czvf yatori-go-console.${{env.VERSION}}-linux-amd64-release.tar.gz yatori-go-console.${{env.VERSION}}-linux-amd64-release
-          rm -rf yatori-go-console.${{env.VERSION}}-linux-amd64-release
+          tar -czvf yatori-go-console.${{env.VERSION}}-linux-s390x-release.tar.gz yatori-go-console.${{env.VERSION}}-linux-s390x-release
+          rm -rf yatori-go-console.${{env.VERSION}}-linux-s390x-release
           cd ..
       # Create GitHub Release
       - name: Create GitHub Release with custom notes
