@@ -63,10 +63,14 @@ jobs:
       # Build Linux s390x
       - name: Build Linux s390x
         run: |
+          export CGO_ENABLED=1
+          export GOOS=linux
+          export GOARCH=s390x
+          export CC=s390x-linux-gnu-gcc  # 指定使用 s390x 架构的编译器
           export CGO_CFLAGS="-march=s390x"
-          echo "CGO_CFLAGS: $CGO_CFLAGS"  # 打印 CGO_CFLAGS 的值
-          CGO_ENABLED=1 GOOS=linux GOARCH=s390x go build \
-            -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release/${{ env.PROJECT_NAME }}
+          echo "CC: $CC"
+          echo "CGO_CFLAGS: $CGO_CFLAGS"
+          go build -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release/${{ env.PROJECT_NAME }}
       - name: Create release tar
         run: | # 打包发布版本压缩包
           cp command/config.yaml ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release
