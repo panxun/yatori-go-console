@@ -31,7 +31,7 @@ jobs:
   # Linux build job
   build-linux:
     name: Build Linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,10 +43,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libasound2-dev pkg-config gcc-s390x-linux-gnu
-          sudo dpkg --add-architecture s390x
-          sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|http://ports.ubuntu.com/ubuntu-ports|g' /etc/apt/sources.list
-          sudo apt-get update
-          sudo apt-get install libasound2-dev:s390x
 
       # Set up Go
       - name: Set up Go
@@ -125,7 +121,7 @@ jobs:
           set CGO_ENABLED=1
           set GOOS=windows 
           set GOARCH=amd64 
-          go build -o ${{ env.RELEASE_DIR }}\yatori-go-console.${{env.VERSION}}-windows-amd64-release\${{ env.PROJECT_NAME }}.exe
+          go build -tags "no_audio" -o ${{ env.RELEASE_DIR }}\yatori-go-console.${{env.VERSION}}-windows-amd64-release\${{ env.PROJECT_NAME }}.exe
       #          tar -czvf yatori-go-console.${{env.VERSION}}-windows-amd64-release.tar.gz yatori-go-console.${{env.VERSION}}-windows-amd64-release 这个是windows打包tar.gz包的
       - name: Create Release zip
         run: |
