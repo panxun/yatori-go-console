@@ -63,7 +63,7 @@ jobs:
       # Build Linux s390x
       - name: Build Linux s390x
         run: |
-          CGO_ENABLED=1 GOOS=linux GOARCH=s390x CC=s390x-linux-gnu-gcc go build \
+          CGO_ENABLED=1 GOOS=linux GOARCH=s390x CC=s390x-linux-gnu-gcc go build -tags "no_audio" \
             -o ${{ env.RELEASE_DIR }}/yatori-go-console.${{env.VERSION}}-linux-s390x-release/${{ env.PROJECT_NAME }}
       - name: Create release tar
         run: | # 打包发布版本压缩包
