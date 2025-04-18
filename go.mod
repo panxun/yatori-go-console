@@ -8,7 +8,7 @@ go 1.23.4
 //然后自行设置代理，set http_proxy=http:localhost:xxxx 你的VPN本地代理
 //然后自行设置代理，set https_proxy=http:localhost:xxxx 你的VPN本地代理
 require (
-	github.com/faiface/beep v1.1.0
+	
 	github.com/spf13/viper v1.19.0
 	github.com/thedevsaddam/gojsonq v1.9.1
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
@@ -22,7 +22,6 @@ require (
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hajimehoshi/go-mp3 v0.3.4 // indirect
-	github.com/hajimehoshi/oto v1.0.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
